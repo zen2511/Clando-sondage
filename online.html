@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CLANDO — Donnez votre avis</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0D0F14;color:#E8ECF4;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+header{background:#161A22;border-bottom:2px solid #F5A623;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.logo{font-size:22px;font-weight:800;color:#F5A623;letter-spacing:2px}
+.tag{font-size:11px;color:#6B7A99;background:#1E2330;padding:3px 8px;border-radius:4px;border:1px solid #2A3045}
+.container{max-width:620px;margin:0 auto;padding:20px 16px 80px}
+.card{background:#1E2330;border:1px solid #2A3045;border-radius:12px;padding:20px;margin-bottom:16px}
+.section-title{font-size:11px;font-weight:700;letter-spacing:2px;color:#F5A623;text-transform:uppercase;margin-bottom:16px}
+.question{font-size:15px;font-weight:600;color:#E8ECF4;margin-bottom:12px;line-height:1.4}
+.qnum{display:inline-block;background:#F5A623;color:#000;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;margin-right:8px}
+.option{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:1px solid #2A3045;cursor:pointer;margin-bottom:8px;font-size:14px;color:#A8B3CF;transition:all 0.15s;user-select:none}
+.option:active{opacity:0.7}
+.option.selected{border-color:#F5A623;background:rgba(245,166,35,0.1);color:#F5A623}
+.radio{width:16px;height:16px;border-radius:50%;border:2px solid #2A3045;flex-shrink:0;transition:all 0.15s}
+.option.selected .radio{border-color:#F5A623;background:#F5A623}
+.checkbox{width:16px;height:16px;border-radius:3px;border:2px solid #2A3045;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;transition:all 0.15s}
+.option.selected .checkbox{border-color:#F5A623;background:#F5A623;color:#000}
+input,textarea{width:100%;background:#161A22;border:1px solid #2A3045;border-radius:8px;padding:10px 14px;color:#E8ECF4;font-size:14px;outline:none;font-family:inherit}
+textarea{resize:vertical;min-height:80px}
+.btn{padding:12px 24px;border-radius:8px;border:none;font-weight:700;font-size:14px;cursor:pointer;transition:opacity 0.15s}
+.btn-primary{background:#F5A623;color:#000}
+.btn-ghost{background:#1E2330;color:#E8ECF4;border:1px solid #2A3045}
+.btn:active{opacity:0.7}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
+.progress-bar-wrap{height:3px;background:#2A3045;border-radius:2px;margin-bottom:6px;overflow:hidden}
+.progress-bar{height:100%;background:#F5A623;border-radius:2px;transition:width 0.3s}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700}
+.badge-client{background:rgba(34,197,94,0.13);color:#22C55E;border:1px solid rgba(34,197,94,0.3)}
+.badge-conducteur{background:rgba(129,140,248,0.13);color:#818CF8;border:1px solid rgba(129,140,248,0.3)}
+.intro-box{background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.3);border-radius:8px;padding:12px 14px;margin-bottom:20px;font-size:13px;color:#A8B3CF;font-style:italic;line-height:1.5}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.type-card{background:#1E2330;border:2px solid #2A3045;border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;transition:all 0.2s}
+.type-card:active{opacity:0.7}
+.type-card.selected-client{border-color:#22C55E;background:rgba(34,197,94,0.08)}
+.type-card.selected-conducteur{border-color:#818CF8;background:rgba(129,140,248,0.08)}
+.type-icon{font-size:32px;margin-bottom:8px}
+.type-label{font-weight:700;margin-bottom:4px}
+.type-sub{font-size:12px;color:#6B7A99}
+.muted{color:#6B7A99;font-size:12px}
+.stat-val{font-size:28px;font-weight:800}
+.screen{display:none}
+.screen.active{display:block}
+.other-input{margin-top:-4px;margin-bottom:8px}
+label{font-size:12px;color:#6B7A99;display:block;margin-bottom:4px}
+.alert-box{background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.3);border-radius:8px;padding:12px 14px;font-size:13px;color:#A8B3CF;line-height:1.6;margin-bottom:24px}
+</style>
+</head>
+<body>
+
+<div id="screen-accueil" class="screen active">
+  <header><span class="logo">CLANDO</span><span class="tag">Sondage en ligne</span></header>
+  <div class="container">
+    <div style="text-align:center;padding:32px 0 24px">
+      <div style="font-size:52px;margin-bottom:12px">🛵</div>
+      <h1 style="font-size:24px;font-weight:800;margin-bottom:6px">Donnez votre avis sur CLANDO</h1>
+      <p style="color:#A8B3CF;font-size:14px;margin-bottom:4px">Application Moto-Taxi · Grand Nord Cameroun</p>
+      <p style="color:#6B7A99;font-size:13px">Durée estimée : 5 minutes</p>
+    </div>
+    <div class="alert-box">
+      🙏 Votre avis nous aide à construire une meilleure application de moto-taxi pour Maroua, Garoua et Ngaoundéré.<br>
+      🔒 Vos réponses sont anonymes et confidentielles.
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:16px;font-size:16px" onclick="startForm()">Commencer le sondage →</button>
+  </div>
+</div>
+
+<div id="screen-form" class="screen">
+  <header>
+    <span class="logo">CLANDO</span>
+    <span class="badge badge-client">👤 Sondage Client</span>
+  </header>
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div class="progress-bar-wrap" style="flex:1"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+      <span class="muted" id="progress-pct">0%</span>
+    </div>
+    <p class="muted" id="progress-count" style="margin-bottom:20px">0 / 0 questions répondues</p>
+
+    <div id="questions-container"></div>
+
+    <div class="card">
+      <div class="section-title">💬 Commentaires libres</div>
+      <p style="font-size:14px;color:#A8B3CF;margin-bottom:8px">Y a-t-il quelque chose d'important à ajouter ?</p>
+      <textarea id="commentaire" placeholder="Remarques, suggestions..."></textarea>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost" style="flex:1" onclick="showScreen('accueil')">← Annuler</button>
+      <button class="btn btn-primary" id="btn-submit" style="flex:2" onclick="submitForm()">✓ Soumettre</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-merci" class="screen">
+  <header><span class="logo">CLANDO</span></header>
+  <div class="container" style="text-align:center;padding-top:60px">
+    <div style="font-size:64px;margin-bottom:20px">🎉</div>
+    <h2 style="color:#22C55E;margin-bottom:8px">Merci pour votre participation !</h2>
+    <p style="color:#A8B3CF;margin-bottom:32px">Vos réponses ont été enregistrées avec succès.</p>
+    <p class="muted" style="margin-bottom:32px">CLANDO — La mobilité du Grand Nord Cameroun</p>
+    <button class="btn btn-primary" onclick="resetForm()">Nouveau questionnaire</button>
+  </div>
+</div>
+
+<script>
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzYzHYyMK7WHd0O2sgfl-JpkW4KBpJO4ee3NQqXOSowbDSaF_vmmcE22Wq7pTMhmTuH/exec";
+let answers = {};
+
+const QUESTIONS_COMMUN = [
+  {id:"q1",section:"👤 Profil",text:"Quel est votre sexe ?",type:"radio",opts:["Masculin","Féminin","Autre / Préfère ne pas répondre"]},
+  {id:"q2",section:null,text:"Quel est votre âge ?",type:"radio",opts:["Moins de 18 ans","18 – 25 ans","26 – 35 ans","36 – 45 ans","Plus de 45 ans"]},
+  {id:"q3",section:null,text:"Quel est votre niveau d'instruction ?",type:"radio",opts:["Aucun / Non scolarisé","École primaire","Collège / Lycée","Université / Supérieur"]},
+  {id:"q4",section:null,text:"Possédez-vous un téléphone portable ?",type:"radio",opts:["Non","Oui — Téléphone basique (appels/SMS)","Oui — Smartphone Android","Oui — iPhone"]},
+  {id:"q5",section:null,text:"Utilisez-vous WhatsApp régulièrement ?",type:"radio",opts:["Oui, tous les jours","Oui, parfois","Non"]},
+  {id:"q5b",section:null,text:"Dans quelle ville habitez-vous principalement ?",type:"radio",opts:["Maroua","Garoua","Ngaoundéré","Autre ville du Grand Nord"]},
+];
+const QUESTIONS_CLIENT = [
+  {id:"q6",section:"🛵 Usage moto-taxi",text:"À quelle fréquence utilisez-vous un moto-taxi par semaine ?",type:"radio",opts:["Jamais","1 à 2 fois","3 à 5 fois","Plus de 5 fois par semaine"]},
+  {id:"q7",section:null,text:"Combien payez-vous en moyenne une course ?",type:"radio",opts:["Moins de 200 FCFA","200 à 400 FCFA","400 à 700 FCFA","Plus de 700 FCFA"]},
+  {id:"q8",section:null,text:"Comment choisissez-vous votre conducteur ?",type:"radio",opts:["Je prends le premier disponible","J'ai un conducteur habituel","Je négocie le prix avant","Je demande à des proches"]},
+  {id:"q9",section:null,text:"Quel est le principal problème que vous rencontrez ?",type:"radio",opts:["Prix non fixe / négociation difficile","Insécurité / conducteur inconnu","Difficulté à trouver un moto-taxi","Pas de monnaie / cash uniquement","Autre"],other:true},
+  {id:"q9b",section:null,text:"À quelle heure utilisez-vous le plus souvent un moto-taxi ?",type:"radio",opts:["Matin (6h–9h)","Milieu de journée (9h–14h)","Après-midi (14h–18h)","Soir (après 18h)"]},
+  {id:"q10",section:"💳 Paiement",text:"Avez-vous déjà utilisé Mobile Money (MTN MoMo ou Orange Money) ?",type:"radio",opts:["Oui, régulièrement","Oui, rarement","Non, jamais","Je ne connais pas ce service"]},
+  {id:"q11",section:null,text:"Seriez-vous à l'aise pour payer une course via Mobile Money ?",type:"radio",opts:["Oui, tout à fait","Oui, si c'est simple","Non, je préfère le cash","Je ne sais pas"]},
+  {id:"q12",section:"🚀 Réaction CLANDO",intro:"« Nous développons CLANDO, une application pour commander un moto-taxi à Maroua/Garoua. Vous voyez la position du chauffeur, payez par Mobile Money, et gagnez des réductions selon votre fidélité. C'est gratuit pour les clients. »",text:"Quelle est votre première réaction à cette idée ?",type:"radio",opts:["Excellente idée, j'utiliserais cette application","Bonne idée, mais j'ai besoin d'en savoir plus","Je ne suis pas convaincu(e)","Ce n'est pas adapté à nos besoins ici"]},
+  {id:"q13",section:null,text:"Quelle fonctionnalité vous attire le plus ?",type:"radio",opts:["Voir le conducteur avant de monter (sécurité)","Prix fixe sans négociation","Payer par Mobile Money","Les réductions pour les clients fidèles","Commander à distance"]},
+  {id:"q14",section:null,text:"Quel prix mensuel seriez-vous prêt(e) à payer pour CLANDO PREMIUM ?",type:"radio",opts:["Rien, l'app doit être gratuite","500 à 1 000 FCFA / mois","1 000 à 2 000 FCFA / mois","Plus de 2 000 FCFA / mois"]},
+  {id:"q15",section:null,text:"Qu'est-ce qui pourrait vous empêcher d'utiliser CLANDO ?",type:"multi",opts:["Je n'ai pas de smartphone","Je n'ai pas accès à Mobile Money","Connexion internet insuffisante","Je fais confiance à mon conducteur habituel","Peur pour la sécurité de mes données","Autre"],other:true},
+  {id:"q15b",section:null,text:"Recommanderiez-vous CLANDO à vos proches ?",type:"radio",opts:["Oui, certainement","Oui, probablement","Peut-être","Non"]},
+];
+function uid(){return Math.random().toString(36).slice(2,9)+Date.now().toString(36)}
+
+function showScreen(name){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("screen-"+name).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function getQuestions(){
+  return [...QUESTIONS_COMMUN,...QUESTIONS_CLIENT];
+}
+
+function startForm(){
+  answers={};
+  buildForm();
+  showScreen('form');
+}
+
+function buildForm(){
+  const qs=getQuestions();
+  const container=document.getElementById('questions-container');
+  container.innerHTML='';
+  let currentSection=null;
+  let cardEl=null;
+
+  qs.forEach((q,i)=>{
+    if(q.section && q.section!==currentSection){
+      currentSection=q.section;
+      cardEl=document.createElement('div');
+      cardEl.className='card';
+      cardEl.innerHTML=`<div class="section-title">${q.section}</div>`;
+      container.appendChild(cardEl);
+    }
+    if(!cardEl){
+      cardEl=document.createElement('div');
+      cardEl.className='card';
+      container.appendChild(cardEl);
+    }
+    if(q.intro){
+      cardEl.innerHTML+=`<div class="intro-box">${q.intro}</div>`;
+    }
+    const qDiv=document.createElement('div');
+    qDiv.style.marginBottom='24px';
+    const multiNote=q.type==='multi'?' <span style="color:#6B7A99;font-weight:400;font-size:13px">(plusieurs choix)</span>':'';
+    qDiv.innerHTML=`<p class="question"><span class="qnum">Q${i+1}</span>${q.text}${multiNote}</p>`;
+    q.opts.forEach(opt=>{
+      const isOther=opt==='Autre';
+      const optDiv=document.createElement('div');
+      optDiv.className='option';
+      optDiv.id=`opt-${q.id}-${opt.replace(/\s/g,'_')}`;
+      const indicator=q.type==='multi'
+        ?`<div class="checkbox" id="ind-${q.id}-${opt.replace(/\s/g,'_')}"></div>`
+        :`<div class="radio" id="ind-${q.id}-${opt.replace(/\s/g,'_')}"></div>`;
+      optDiv.innerHTML=`${indicator}<span>${opt}</span>`;
+      optDiv.onclick=()=>selectOption(q,opt);
+      qDiv.appendChild(optDiv);
+      if(isOther&&q.other){
+        const inp=document.createElement('input');
+        inp.type='text';inp.placeholder='Précisez...';inp.className='other-input';
+        inp.id=`other-${q.id}`;inp.style.display='none';
+        inp.oninput=()=>{answers[q.id+'_other']=inp.value};
+        qDiv.appendChild(inp);
+      }
+    });
+    cardEl.appendChild(qDiv);
+  });
+  updateProgress();
+}
+
+function selectOption(q,opt){
+  if(q.type==='radio'){
+    answers[q.id]=opt;
+    q.opts.forEach(o=>{
+      const el=document.getElementById(`opt-${q.id}-${o.replace(/\s/g,'_')}`);
+      if(el) el.className='option'+(o===opt?' selected':'');
+    });
+    if(q.other){
+      const inp=document.getElementById(`other-${q.id}`);
+      if(inp) inp.style.display=opt==='Autre'?'block':'none';
+    }
+  } else {
+    if(!answers[q.id+'_multi']) answers[q.id+'_multi']=[];
+    const arr=answers[q.id+'_multi'];
+    const idx=arr.indexOf(opt);
+    if(idx>=0) arr.splice(idx,1); else arr.push(opt);
+    const el=document.getElementById(`opt-${q.id}-${opt.replace(/\s/g,'_')}`);
+    const ind=document.getElementById(`ind-${q.id}-${opt.replace(/\s/g,'_')}`);
+    const sel=arr.includes(opt);
+    if(el) el.className='option'+(sel?' selected':'');
+    if(ind) ind.textContent=sel?'✓':'';
+    if(q.other){
+      const inp=document.getElementById(`other-${q.id}`);
+      if(inp) inp.style.display=arr.includes('Autre')?'block':'none';
+    }
+  }
+  updateProgress();
+}
+
+function updateProgress(){
+  const qs=getQuestions();
+  let answered=0;
+  qs.forEach(q=>{
+    if(q.type==='multi'){if((answers[q.id+'_multi']||[]).length>0)answered++;}
+    else{if(answers[q.id])answered++;}
+  });
+  const pct=Math.round(answered/qs.length*100);
+  document.getElementById('progress-bar').style.width=pct+'%';
+  document.getElementById('progress-pct').textContent=pct+'%';
+  document.getElementById('progress-count').textContent=answered+' / '+qs.length+' questions répondues';
+}
+
+async function submitForm(){
+  const btn=document.getElementById('btn-submit');
+  btn.disabled=true;btn.textContent='Envoi en cours...';
+  const qs=getQuestions();
+  const record={id:uid(),type:'client',source:'en_ligne',timestamp:new Date().toLocaleString('fr-FR')};
+  qs.forEach(q=>{
+    if(q.type==='multi'){
+      record[q.id]=(answers[q.id+'_multi']||[]).join(' | ');
+      if(q.other&&answers[q.id+'_other']) record[q.id+'_other']=answers[q.id+'_other'];
+    } else {
+      if(answers[q.id]) record[q.id]=answers[q.id];
+      if(q.other&&answers[q.id+'_other']) record[q.id+'_other']=answers[q.id+'_other'];
+    }
+  });
+  record.commentaire=document.getElementById('commentaire').value;
+  try{
+    await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(record)});
+  }catch(e){console.error(e);}
+  btn.disabled=false;btn.textContent='✓ Soumettre';
+  showScreen('merci');
+}
+
+function resetForm(){
+  answers={};
+  showScreen('accueil');
+}
+</script>
+</body>
+</html>
